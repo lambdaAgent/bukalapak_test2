@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>calendar</title>
+	<link rel="stylesheet" type="text/css" href="./index.css">
+</head>
+<body>
+	<div class="main">
+		<div class="header">
+			<div class="arrow" id="doubleArrow_left">
+			  <<
+			</div>
+			<div class="arrow" id="arrow_left">
+			   <
+			</div>
+
+			<div class="calendar_name">
+				<span id="month"></span>
+				<span id="year"></span>
+			</div>
+
+			<div class="arrow" id="arrow_right">
+				>
+			</div>
+			<div class="arrow" id="doubleArrow_right">
+				>>
+			</div>
+		</div>
+
+		<table class="table">
+			<tr> 
+				<td class="center">Sun</td>
+				<td class="center">Mon</td>
+				<td class="center">Tue</td>
+				<td class="center">Wed</td>
+				<td class="center">Thu</td>
+				<td class="center">Fri</td>
+				<td class="center">Sat</td>
+			</tr>
+
+			<tr id="row1" class="week_row"> 
+				<td class="Sun">&nbsp;</td>
+				<td class="Mon">&nbsp;</td>
+				<td class="Tue">&nbsp;</td>
+				<td class="Wed">&nbsp;</td>
+				<td class="Tue">&nbsp;</td>
+				<td class="Fri">&nbsp;</td>
+				<td class="Sat">&nbsp;</td>
+			</tr>
+
+			<tr id="row2" class="week_row"> 
+				<td class="Sun">&nbsp;</td>
+				<td class="Mon">&nbsp;</td>
+				<td class="Tue">&nbsp;</td>
+				<td class="Wed">&nbsp;</td>
+				<td class="Tue">&nbsp;</td>
+				<td class="Fri">&nbsp;</td>
+				<td class="Sat">&nbsp;</td>
+			</tr>
+			<tr id="row3" class="week_row"> 
+				<td class="Sun">&nbsp;</td>
+				<td class="Mon">&nbsp;</td>
+				<td class="Tue">&nbsp;</td>
+				<td class="Wed">&nbsp;</td>
+				<td class="Tue">&nbsp;</td>
+				<td class="Fri">&nbsp;</td>
+				<td class="Sat">&nbsp;</td>
+			</tr>
+			<tr id="row4" class="week_row"> 
+				<td class="Sun">&nbsp;</td>
+				<td class="Mon">&nbsp;</td>
+				<td class="Tue">&nbsp;</td>
+				<td class="Wed">&nbsp;</td>
+				<td class="Tue">&nbsp;</td>
+				<td class="Fri">&nbsp;</td>
+				<td class="Sat">&nbsp;</td>
+			</tr>
+			<tr id="row5" class="week_row"> 
+				<td class="Sun">&nbsp;</td>
+				<td class="Mon">&nbsp;</td>
+				<td class="Tue">&nbsp;</td>
+				<td class="Wed">&nbsp;</td>
+				<td class="Tue">&nbsp;</td>
+				<td class="Fri">&nbsp;</td>
+				<td class="Sat">&nbsp;</td>
+			</tr>
+		</table>
+
+	</div>
+
+
+	<script type="text/javascript">
+		var getId = id => document.getElementById(id)
+
+		var doubleArrow_right = document.getElementById("doubleArrow_right");
+		var doubleArrow_left = document.getElementById("doubleArrow_left");
+		var arrow_right = document.getElementById("arrow_right");
+		var arrow_left = document.getElementById("arrow_left");
+
+
+		var months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
+
+		var year = 2016;
+		var labelYear = document.getElementById("year")
+		var labelMonth = document.getElementById("month")
+		var calendar = {
+			"2016": {
+				"March":{
+					DAYS: 31,
+					start:"Tue"
+				},
+				"April":{
+					DAYS: 30,
+					start: "Fri"
+				},
+				"May":{
+					DAYS: 31,
+					start: "Sun"
+				},
+				"June":{
+					DAYS: 30,
+					start:"Wed"
+				},
+				"July":{
+					DAYS: 31,
+					start:"Fri"
+				},
+				"August": {
+					DAYS: 31,
+					start: "Mon"
+				},
+				"September":{
+					DAYS:30,
+					start: "Thu"
+				},
+				"October":{
+					DAYS: 31,
+					start:"Sat"
+				},
+				"November": {
+					DAYS: 30,
+					start: "Tue"
+				},
+				"December":{
+					DAYS:31,
+					start: "Thu"
+				}
+			},
+			"2017":{
+				"January":{
+					DAYS: 31,
+					start:"Sun"
+				},
+				"February": {
+					DAYS: 28,
+					start:"Wed"
+				}
+			}
+		}
+		
+		window.onload = () => {
+				init();
+		};
+		function init(){
+			var thismonth = new Date().getMonth(); //index
+			var thisyear = new Date().getYear();
+			labelMonth.innerHTML = months[thismonth];
+			labelYear.innerHTML = thisyear - 100 + 2000;
+
+			renderDates(calendar[labelYear.innerHTML][labelMonth.innerHTML].DAYS , calendar[labelYear.innerHTML][labelMonth.innerHTML].start)
+
+			//attach eventListener
+			doubleArrow_left.addEventListener("click", () => {
+				var content = labelYear.innerHTML;
+				var year = Number(labelYear.innerHTML) - 1;
+				labelYear.innerHTML=year;
+
+			});
+			doubleArrow_right.addEventListener("click", () => {
+				var content = labelYear.innerHTML;
+				var year = Number(labelYear.innerHTML) + 1;
+				labelYear.innerHTML=year;
+			});
+			arrow_right.addEventListener("click", () => {
+				var thisMonth = labelMonth.innerHTML;
+				var resultMonth = addMonth(thisMonth);
+				labelMonth.innerHTML = resultMonth;
+				renderDates(calendar[labelYear.innerHTML][labelMonth.innerHTML].DAYS, calendar[labelYear.innerHTML][labelMonth.innerHTML].start)
+			});
+
+			arrow_left.addEventListener("click", () => {
+				var thisMonth = labelMonth.innerHTML;
+				var resultMonth = subMonth(thisMonth);
+				labelMonth.innerHTML = resultMonth;
+			});
+			// renderDates()
+		}
+
+
+
+		function addMonth(currentMonth){
+			var idx = months.indexOf(currentMonth);
+			var newIdx; 
+			if(idx === 11){
+				newIdx = 0
+				labelYear.innerHTML = Number(labelYear.innerHTML) + 1;
+			} else {
+				newIdx = idx + 1;
+			}
+
+			return months[newIdx]
+		}
+
+
+		function subMonth(currentMonth){
+			var idx = months.indexOf(currentMonth);
+			var newIdx; 
+			if(idx === 0){
+				newIdx = 11
+				labelYear.innerHTML = Number(labelYear.innerHTML) - 1;
+			} else {
+				newIdx = idx - 1;
+			}
+			return months[newIdx]
+		}
+
+		
+
+		//RENDER DATES
+
+		
+		var DAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
+		function renderDates(lengthOfDays, startDay){
+			clearCells();
+
+			var lengthOfDays = lengthOfDays || 30;
+			var startDay = startDay || "Tue";
+			var value = 0;
+			var rowNumber = 1;
+			loopDate(lengthOfDays, startDay, value, rowNumber)
+		}
+
+		function renderDates_ByDaysAtRow(day__String, row__number, value){
+			var parent = document.getElementById("row"+row__number);
+			var idx = DAYS.indexOf(day__String);
+			parent.children[idx].innerHTML = value;
+		}
+		
+
+		function loopDate(lengthOfDays, day__String, value, rowNumber){
+			value = value + 1;
+
+			if(lengthOfDays === 0){
+				return;
+			}
+			
+			var todayIndex = DAYS.indexOf(day__String);
+			var nextDay = (todayIndex === 6) ? DAYS[0] : DAYS[++todayIndex];
+			renderDates_ByDaysAtRow(day__String, rowNumber, value);
+
+
+			if(day__String === "Sat"){
+				rowNumber += 1;
+			}
+			loopDate(lengthOfDays-1, nextDay, value, rowNumber);
+		}
+
+		function clearCells(){
+			var td = document.getElementsByTagName("td")
+			var length = td.length;
+			for (var i = 7; i<td.length; i++){
+				td[i].innerHTML = ""
+			}
+
+			//consider attaching eventListener
+
+		}
+	</script>
+</body>
+</html>

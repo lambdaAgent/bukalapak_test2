@@ -1,0 +1,24 @@
+.percent
+{
+	width:19.2%;
+	display: inline-block;	
+	margin-left: 0;
+	margin-right: 0;
+	text-align: center;
+	border-right: 1px solid black;
+}
+.right{
+	border-right: none;
+}
+.main{
+	border: 1px solid black;
+}
+.tab{
+	border-bottom: 1px solid black;
+}
+
+#log{
+	height: 100px !important;
+	min-height: 100px;
+	text-align: center;
+}

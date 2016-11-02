@@ -1,0 +1,23 @@
+.main{
+	width: 100%;
+}
+.arrow{
+	text-align: center;
+	width: 10%;
+	display: inline-block;
+	border: 1px solid black;
+}
+.calendar_name{
+	width: 50%;
+	display: inline-block;
+	border: 1px solid black;
+}
+
+.table{
+	width: 100%;
+}
+
+.week_row{
+	background-color: #ddd;
+	border: 1px solid black;
+}
